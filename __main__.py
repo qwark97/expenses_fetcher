@@ -4,6 +4,7 @@ from selenium import webdriver
 
 from expenses_fetcher.data_fetcher import fetch_today_expenses
 from expenses_fetcher.data_parser import parse_html
+from expenses_fetcher.data_sender import store_data
 from expenses_fetcher.files_designator import designate_the_newest_result
 from expenses_fetcher.notifier import notify_about_error
 from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
@@ -46,6 +47,11 @@ def run():
         data, err = parse_html(file_path)
         if err:
             notify_about_error(msg=f"Przetworzenie pobranych rezultatów się nie powiodło z błędem: {err}")
+            exit(1)
+
+        err = store_data(data)
+        if err:
+            notify_about_error(msg=f"Przesłanie uzyskanych danych się nie powiodło z błędem: {err}")
             exit(1)
 
     finally:
