@@ -36,7 +36,8 @@ def run():
         # designate the newest result
         file_path, ok = designate_the_newest_result()
         if not ok:
-            notify_about_error(msg="Wyznaczenie najnowszego rezultatu się nie powiodło")
+            # if ok == False, then 'file_path' contains raised exception
+            notify_about_error(msg=f"Wyznaczenie najnowszego rezultatu się nie powiodło z błędem: {file_path}")
 
     finally:
         if driver:
