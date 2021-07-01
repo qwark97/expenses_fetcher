@@ -76,3 +76,6 @@ def fetch_today_expenses(driver: webdriver.Chrome) -> bool:
             return False
     else:
         return True
+    finally:
+        if driver:
+            driver.quit()
