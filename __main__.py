@@ -3,7 +3,7 @@ import time
 
 from selenium import webdriver
 
-from expenses_fetcher.fetch_data import fetch_today_expenses
+from expenses_fetcher.data_fetcher import fetch_today_expenses
 from expenses_fetcher.notifier import notify_about_error
 from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
     BROWSER_PROFILE_PATH, USER_AGENT, ERROR_SCREENS
