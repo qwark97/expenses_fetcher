@@ -32,7 +32,7 @@ def run():
         # fetch expenses
         ok = fetch_today_expenses(driver)
         if not ok:
-            notify_about_error(msg="Pobieranie danych z banku się nie powiodło")
+            notify_about_error(msg="Pobieranie danych z banku się nie powiodło. Sprawdź screenshot'a")
             exit(1)
 
         # designate the newest result
