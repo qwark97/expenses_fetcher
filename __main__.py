@@ -3,6 +3,7 @@ import os
 from selenium import webdriver
 
 from expenses_fetcher.data_fetcher import fetch_today_expenses
+from expenses_fetcher.data_parser import parse_html
 from expenses_fetcher.files_designator import designate_the_newest_result
 from expenses_fetcher.notifier import notify_about_error
 from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
@@ -38,6 +39,11 @@ def run():
         if not ok:
             # if ok == False, then 'file_path' contains raised exception
             notify_about_error(msg=f"Wyznaczenie najnowszego rezultatu się nie powiodło z błędem: {file_path}")
+
+        # parse fetched html
+        data, err = parse_html(file_path)
+        if err:
+            notify_about_error(msg=f"Przetworzenie pobranych rezultatów się nie powiodło z błędem: {err}")
 
     finally:
         if driver:
