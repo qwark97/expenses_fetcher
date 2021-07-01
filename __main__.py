@@ -1,9 +1,9 @@
 import os
-import time
 
 from selenium import webdriver
 
 from expenses_fetcher.data_fetcher import fetch_today_expenses
+from expenses_fetcher.files_designator import designate_the_newest_result
 from expenses_fetcher.notifier import notify_about_error
 from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
     BROWSER_PROFILE_PATH, USER_AGENT, ERROR_SCREENS
@@ -11,8 +11,8 @@ from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT
 
 def run():
     driver = None
-    # run browser
     try:
+        # run browser
         prefs = {'download.default_directory': HTML_RESULTS}
         o = webdriver.ChromeOptions()
         o.headless = True
@@ -24,16 +24,23 @@ def run():
             options=o,
         )
         driver.set_window_size(1920, 1080)
-    # handle error
     except Exception as e:
-        notify_about_error(str(e))
-    # fetch expenses
+        # handle error
+        notify_about_error(msg=f"Uruchomienie przeglądarki się nie powiodło z błędem: {str(e)}")
     else:
-        result = fetch_today_expenses(driver)
+        # fetch expenses
+        ok = fetch_today_expenses(driver)
+        if not ok:
+            notify_about_error(msg="Pobieranie danych z banku się nie powiodło")
 
-    # close browser
+        # designate the newest result
+        file_path, ok = designate_the_newest_result()
+        if not ok:
+            notify_about_error(msg="Wyznaczenie najnowszego rezultatu się nie powiodło")
+
     finally:
         if driver:
+            # close browser if it hasn't been closed because of some reason
             driver.quit()
 
 
