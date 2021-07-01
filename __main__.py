@@ -33,17 +33,20 @@ def run():
         ok = fetch_today_expenses(driver)
         if not ok:
             notify_about_error(msg="Pobieranie danych z banku się nie powiodło")
+            exit(1)
 
         # designate the newest result
         file_path, ok = designate_the_newest_result()
         if not ok:
             # if ok == False, then 'file_path' contains raised exception
             notify_about_error(msg=f"Wyznaczenie najnowszego rezultatu się nie powiodło z błędem: {file_path}")
+            exit(1)
 
         # parse fetched html
         data, err = parse_html(file_path)
         if err:
             notify_about_error(msg=f"Przetworzenie pobranych rezultatów się nie powiodło z błędem: {err}")
+            exit(1)
 
     finally:
         if driver:
