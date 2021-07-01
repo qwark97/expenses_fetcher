@@ -1,33 +1,21 @@
 import os
 
-from selenium import webdriver
-
-from expenses_fetcher.data_fetcher import fetch_today_expenses
+from expenses_fetcher.data_fetcher import fetch_today_expenses, run_browser
 from expenses_fetcher.data_parser import parse_html
 from expenses_fetcher.data_sender import store_data
 from expenses_fetcher.files_designator import designate_the_newest_result
 from expenses_fetcher.notifier import notify_about_error
-from expenses_fetcher.variables import CHROMEDRIVER_PATH, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
-    BROWSER_PROFILE_PATH, USER_AGENT, ERROR_SCREENS
+from expenses_fetcher.variables import ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RESULTS, \
+    BROWSER_PROFILE_PATH, ERROR_SCREENS
 
 
 def run():
     driver = None
     try:
         # run browser
-        prefs = {'download.default_directory': HTML_RESULTS}
-        o = webdriver.ChromeOptions()
-        o.headless = True
-        o.add_argument(f"user-data-dir={BROWSER_PROFILE_PATH}")
-        o.add_argument(f"user-agent={USER_AGENT}")
-        o.add_experimental_option('prefs', prefs)
-        driver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH,
-            options=o,
-        )
-        driver.set_window_size(1920, 1080)
+        driver = run_browser()
     except Exception as e:
-        # handle error
+        # handle error during launching browser
         notify_about_error(msg=f"Uruchomienie przeglądarki się nie powiodło z błędem: {str(e)}")
     else:
         # fetch expenses

@@ -8,7 +8,22 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 
 from expenses_fetcher.variables import MBANK_LOGIN_PAGE, ACCOUNT_LOGIN, ACCOUNT_PASSWORD, MBANK_HISTORY_PAGE, \
-    ERROR_SCREENS
+    ERROR_SCREENS, HTML_RESULTS, BROWSER_PROFILE_PATH, USER_AGENT, CHROMEDRIVER_PATH
+
+
+def run_browser() -> webdriver.Chrome:
+    prefs = {'download.default_directory': HTML_RESULTS}
+    o = webdriver.ChromeOptions()
+    o.headless = True
+    o.add_argument(f"user-data-dir={BROWSER_PROFILE_PATH}")
+    o.add_argument(f"user-agent={USER_AGENT}")
+    o.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(
+        executable_path=CHROMEDRIVER_PATH,
+        options=o,
+    )
+    driver.set_window_size(1920, 1080)
+    return driver
 
 
 def fetch_today_expenses(driver: webdriver.Chrome) -> bool:
