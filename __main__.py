@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from expenses_fetcher.data_fetcher import fetch_today_expenses, run_browser
@@ -9,7 +10,7 @@ from expenses_fetcher.variables import ACCOUNT_LOGIN, ACCOUNT_PASSWORD, HTML_RES
     BROWSER_PROFILE_PATH, ERROR_SCREENS
 
 
-def run():
+async def run():
     driver = None
     try:
         # run browser
@@ -37,7 +38,7 @@ def run():
             notify_about_error(msg=f"Przetworzenie pobranych rezultatów się nie powiodło z błędem: {err}")
             exit(1)
 
-        err = store_data(data)
+        err = await store_data(data)
         if err:
             notify_about_error(msg=f"Przesłanie uzyskanych danych się nie powiodło z błędem: {err}")
             exit(1)
@@ -61,4 +62,4 @@ def init():
 
 if __name__ == '__main__':
     init()
-    run()
+    asyncio.run(run())

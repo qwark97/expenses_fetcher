@@ -9,5 +9,5 @@ MBANK_HISTORY_PAGE = "https://online.mbank.pl/history"
 BROWSER_PROFILE_PATH = os.getenv("EF_BROWSER_PROFILE_PATH")
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
 ERROR_SCREENS = os.getenv("EF_ERROR_SCREENS", os.path.join(os.getcwd(), "error_screens"))
-
+BUDGET_MAINTAINER_URL = os.getenv("EF_BUDGET_MAINTAINER_URL", "http://localhost:9999")
 RELEVANT_CATEGORIES = ['Żywność i chemia domowa']
