@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta
 from datetime import datetime
 
 from selenium import webdriver
@@ -59,12 +60,14 @@ def fetch_today_expenses(driver: webdriver.Chrome) -> bool:
                 (By.XPATH, '//button[@data-test-id="history:clearFilters"]'))).click()
 
         # set filter to today
-        today = datetime.now().strftime("%d.%m.%Y")
-        placeholder = WebDriverWait(driver, 10).until(
-            expected_conditions.element_to_be_clickable(
+        today = datetime.now().today()
+        yesterday = (today - timedelta(days=1)).strftime("%d.%m.%Y")
+        placeholders = WebDriverWait(driver, 10).until(
+            expected_conditions.presence_of_all_elements_located(
                 (By.XPATH, '//div[@class="DateInput DateInput_1"]/input')))
         ac = ActionChains(driver)
-        ac.double_click(placeholder).send_keys(today).perform()
+        for placeholder in placeholders:
+            ac.double_click(placeholder).send_keys(yesterday).perform()
         time.sleep(3)
 
         # download html
