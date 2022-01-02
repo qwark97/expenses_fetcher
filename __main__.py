@@ -38,6 +38,7 @@ async def run():
             notify_about_error(msg=f"Przetworzenie pobranych rezultatów się nie powiodło z błędem: {err}")
             exit(1)
 
+        # save data
         err = await store_data(data)
         if err:
             notify_about_error(msg=f"Przesłanie uzyskanych danych się nie powiodło z błędem: {err}")
