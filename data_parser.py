@@ -18,7 +18,7 @@ def parse_html(file_path: str) -> (list, str):
             if category not in RELEVANT_CATEGORIES:
                 continue
             amount_plain = cells[4].text.replace(',', '.').replace(' PLN', '')
-            amount = float(amount_plain)
+            amount = -1 * float(amount_plain)  # costs will become positive values (proper), incomes (which should not appear here) will become negative values (which will be rejected by API)
             data.append({"category": category, 'amount': amount})
     except Exception as e:
         return [], str(e)
